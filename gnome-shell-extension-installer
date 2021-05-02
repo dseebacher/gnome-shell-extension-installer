@@ -426,7 +426,7 @@ interactive_search() {
 }
 
 get_info_from_id() {
-  echo "[$1] Obtaining extension info"
+  echo "[$1] Obtaining extension info"¨
   download_info "/extension-info/?pk=$1" \
                 "Blank file" \
                 "The extension $1" \
@@ -505,9 +505,15 @@ while [ $# -gt 0 ]; do
       RESTART=1
     fi
     shift
-  elif [[ $1 =~ ^3\.[0-9\.]+$ ]]; then
-    GNOME_VERSION="$1"
-    shift
+  elif [ "$1" = "--gnome-version" ]; then
+    if [[ $2 =~ ^[0-9]+[0-9\.]*$ ]]; then
+      GNOME_VERSION="$2"
+      shift 1
+    else
+      echo -e "$SCRIPT_NAME: unrecognized GNOME version '$1'\n" >&2
+      exit 5
+    fi
+    shift 1
   elif [[ $1 =~ ^[0-9]+$ ]]; then
     INSTALL_ARRAY+=( $1 )
     shift
